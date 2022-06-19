@@ -14,9 +14,15 @@ public class StudyService {
 
     public StudyService(MemberService memberService, StudyRepository repository) {
         assert memberService != null;
-        assert repository != null;
+        assert repository != null;// 서비스가 null이면 안된다// 근데 널일수있나?
         this.memberService = memberService;
         this.repository = repository;
+    }
+
+    public Study myCreateNewStudy(Long memberId, Study study) {
+        Member member = memberService.findById(memberId).orElseThrow(() -> new IllegalArgumentException());
+        study.setMember(member);
+        return repository.save(study);
     }
 
     public Study createNewStudy(Long memberId, Study study) {

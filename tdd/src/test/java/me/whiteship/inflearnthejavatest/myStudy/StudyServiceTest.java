@@ -28,80 +28,53 @@ import java.io.File;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.times;
 
-@SpringBootTest
+
+
 @ExtendWith(MockitoExtension.class)
-@ActiveProfiles("test")
-@Testcontainers
-@Slf4j
-@ContextConfiguration(initializers = StudyServiceTest.ContainerPropertyInitializer.class)
 class StudyServiceTest {
 
-    @Mock MemberService memberService;
 
-    @Autowired
-    StudyRepository studyRepository;
-
-    @Value("${container.port}") int port;
-
-    @Container
-    static DockerComposeContainer composeContainer =
-            new DockerComposeContainer(new File("src/test/resources/docker-compose.yml"))
-            .withExposedService("study-db", 5432);
-
+    @Mock//구현체가 없음에도 2번방법
+    MemberService memberService;// extendtion필수
+    @Mock StudyRepository studyRepository;
     @Test
-    void createNewStudy() {
-        System.out.println("========");
-        System.out.println(port);
+    void createStudyService(){
 
-        // Given
-        me.whiteship.inflearnthejavatest.study.StudyService studyService = new me.whiteship.inflearnthejavatest.study.StudyService(memberService, studyRepository);
+//        MemberService memberService = new MemberService() {
+//            @Override
+//            public Optional<Member> findById(Long memberId) {
+//                return Optional.empty();
+//            }
+//            @Override
+//            public void validate(Long memberId) {
+//            }
+//            @Override
+//            public void notify(Study newstudy) {
+//            }
+//            @Override
+//            public void notify(Member member) {
+//            }
+//        };==>1번방법
+//        MemberService memberService   = mock(MemberService.class);
+
+        StudyService studyService = new StudyService(memberService , studyRepository);
         assertNotNull(studyService);
+
 
         Member member = new Member();
         member.setId(1L);
-        member.setEmail("keesun@email.com");
+        member.setEmail("test");
 
-        Study study = new Study(10, "테스트");
+//        when(memberService.findById(1L)).thenReturn(Optional.of(member));
+        //mock객체의 동작방법 Stubbing 1이외의 값은 모두 null (일종의 간의함수)
+        when(memberService.findById(any())).thenReturn(Optional.of(member));
+        // any() 어떤 값을 넘기던 이걸로 해결
+        Member member1 = memberService.findById(1L).get();
+        assertEquals("test" , member1.getEmail());
 
-        given(memberService.findById(1L)).willReturn(Optional.of(member));
 
-        // When
-        studyService.createNewStudy(1L, study);
-
-        // Then
-        assertEquals(1L, study.getOwnerId());
-        then(memberService).should(times(1)).notify(study);
-        then(memberService).shouldHaveNoMoreInteractions();
     }
-
-    @DisplayName("다른 사용자가 볼 수 있도록 스터디를 공개한다.")
-    @Test
-    void openStudy() {
-        // Given
-        me.whiteship.inflearnthejavatest.study.StudyService studyService = new StudyService(memberService, studyRepository);
-        Study study = new Study(10, "더 자바, 테스트");
-        assertNull(study.getOpenedDateTime());
-
-        // When
-        studyService.openStudy(study);
-
-        // Then
-        assertEquals(StudyStatus.OPENED, study.getStatus());
-        assertNotNull(study.getOpenedDateTime());
-        then(memberService).should().notify(study);
-    }
-
-    static class ContainerPropertyInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-
-        @Override
-        public void initialize(ConfigurableApplicationContext context) {
-            TestPropertyValues.of("container.port=" + composeContainer.getServicePort("study-db", 5432))
-                    .applyTo(context.getEnvironment());
-        }
-    }
-
 }
