@@ -18,7 +18,11 @@ public class StudyService {
         this.memberService = memberService;
         this.repository = repository;
     }
-
+    public Study myCreateNewStudy(Long memberId, Study study) {
+        Member member = memberService.findById(memberId).orElseThrow(() -> new IllegalArgumentException());
+        study.setMember(member);
+        return repository.save(study);
+    }
     public Study createNewStudy(Long memberId, Study study) {
         Optional<Member> member = memberService.findById(memberId);
         if (member.isPresent()) {

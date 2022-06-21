@@ -40,6 +40,9 @@ class StudyServiceTest {
     @Mock//구현체가 없음에도 2번방법
     MemberService memberService;// extendtion필수
     @Mock StudyRepository studyRepository;
+
+
+
     @Test
     void createStudyService(){
 
@@ -77,4 +80,30 @@ class StudyServiceTest {
 
 
     }
+
+    @Test
+    void stubbingTest(){
+
+
+        Study study = new Study(10, "테스트");
+        StudyService studyService = new StudyService(memberService , studyRepository);
+
+        assertNotNull(studyService);
+// TODO memberService 객체에 findById 메소드를 1L 값으로 호출하면 Optional.of(member) 객체를 리턴하도록 Stubbing
+// TODO studyRepository 객체에 save 메소드를 study 객체로 호출하면 study 객체 그대로 리턴하도록 Stubbing
+        Member test = Member.builder()
+                .id(1L)
+                .email("test")
+                .build();
+        when(memberService.findById(any())).thenReturn(Optional.ofNullable(test));
+        when(studyRepository.save(study)).thenReturn(study);
+
+
+        studyService.createNewStudy(1L, study);
+
+        assertNotNull(study.getOwner());
+        assertEquals( test.getId() , study.getOwner() );
+    }
+
+
 }

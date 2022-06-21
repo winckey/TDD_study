@@ -18,6 +18,7 @@ public class Study {
     private String name;
     private LocalDateTime openedDateTime;
     private Long ownerId;
+
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
@@ -40,4 +41,9 @@ public class Study {
 
     }
 
+    public Long getOwner() {
+
+        return ownerId;
+
+    }
 }
