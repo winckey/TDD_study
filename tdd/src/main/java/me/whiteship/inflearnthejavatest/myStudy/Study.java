@@ -18,6 +18,6 @@ public class Study {
     private StudyStatus status = StudyStatus.OPENED;
 
 
-
-
+    public Study(int i, String s) {
+    }
 }
