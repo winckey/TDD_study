@@ -1,4 +1,4 @@
-package me.whiteship.inflearnthejavatest.study;
+package me.whiteship.inflearnthejavatest.myStudy;
 
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
