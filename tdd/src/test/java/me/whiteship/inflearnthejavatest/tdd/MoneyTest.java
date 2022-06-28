@@ -1,11 +1,11 @@
 package me.whiteship.inflearnthejavatest.tdd;
 
 
-import me.whiteship.inflearnthejavatest.Money.Dollar;
+import me.whiteship.inflearnthejavatest.Money.Money;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)//객체 생성전략 변경 한개ㅂ만 생성하도록!
@@ -18,20 +18,79 @@ public class MoneyTest {
     //3. 수량 private
     //4. dollar부작용
     //5.money 반올림
+    // chf 의 연산
 
+//
+//    @Test// dollar부작용 해결
+//    void test_multiplication2(){
 
-
-
+        //달러 값변경 없이 곱셈 반환 => 값객체 리턴
+        //https://livenow14.tistory.com/18 객체는한번생성되고 절대 값이 바뀌지 않음
+//        Dollar five = new Dollar(5);
+//
+//        Dollar product = five.times(2);//일단 작성하고 에러를 해결한다 tdd 핵심!
+//
+//
+//        assertEquals(10 , product.amount);
+//        System.out.println(five.amount);
+//        product = five.times(3);
+//        assertEquals(15 , product.amount);
+//        // amount privite으로
+//        Dollar five = new Dollar(5);
+//        Dollar product = five.times(2);
+//        assertEquals(new Dollar(10) , product);
+//        product = five.times(3);
+//        assertEquals(new Dollar(15) , product);
+//
+//    }
+//    @Test// dollar부작용 해결
+//    void test_multiplication_Franc(){
+//
+//
+//        Franc five = new Franc(5);
+//        Franc product = five.times(2);
+//        assertEquals(new Franc(10) , product);
+//        product = five.times(3);
+//        assertEquals(new Franc(15) , product);
+//
+//    }
+    /////// 하위 클래스 제거하기
     @Test
-    void test_multiplication(){
+    void test_multiplication_Money(){
 
-        Dollar five = new Dollar(5);
-        five.times(2);
-        assertEquals(10 , Dollar.amount);
+
+        Money five = Money.dollor(5);
+        assertEquals(Money.dollor(10) , five.times(2));
+        assertEquals(Money.dollor(15) , five.times(3));
+
+        Money ten = Money.franc(10);
+        assertEquals(Money.franc(20) , ten.times(2));
+        assertEquals(Money.franc(30) , ten.times(3));
+    }
+    /////// 하위 클래스 제거를 위한 통화개념 추가
+    @Test
+    void test_currency(){
+        assertEquals("USD" , Money.dollor(1).getCurrency());
+        assertEquals("CHF" , Money.franc(1).getCurrency());
     }
 
 
+    @Test// equals
+    void test_equals(){
 
+//        Dollar dollar = new Dollar(5);
+//        assertEquals(new Dollar(5) , dollar);
+//        assertNotEquals(new Dollar(6) , dollar);
+        // dollar faranc 합치기
+
+        assertEquals(Money.dollor(10) , Money.dollor(10));
+        assertNotEquals(Money.dollor(20) , Money.dollor(10));
+        assertEquals(Money.franc(10) , Money.franc(10));
+        assertNotEquals(Money.franc(20) , Money.franc(10));
+
+        // 다른 화폐비교 불가
+        assertFalse(Money.franc(10).equals(Money.dollor(10)));
+    }
 
 
 
