@@ -93,6 +93,11 @@ public class MoneyTest {
     }
 
 
+    @Test// equals
+    void test_add(){
+        Money sum = Money.dollor(5).plus(Money.dollor(5));
+        assertEquals(Money.dollor(5) , sum);
+    }
 
 
 }
