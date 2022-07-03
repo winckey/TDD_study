@@ -19,7 +19,7 @@ public class Money {
 
     }
 
-    public static Money dollor(int i) {
+    public static Money dollar(int i) {
         return new Money(i ,"USD");
     }
 

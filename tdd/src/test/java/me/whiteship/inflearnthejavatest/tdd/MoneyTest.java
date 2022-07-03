@@ -1,6 +1,7 @@
 package me.whiteship.inflearnthejavatest.tdd;
 
 
+import me.whiteship.inflearnthejavatest.Money.Bank;
 import me.whiteship.inflearnthejavatest.Money.Money;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -59,9 +60,9 @@ public class MoneyTest {
     void test_multiplication_Money(){
 
 
-        Money five = Money.dollor(5);
-        assertEquals(Money.dollor(10) , five.times(2));
-        assertEquals(Money.dollor(15) , five.times(3));
+        Money five = Money.dollar(5);
+        assertEquals(Money.dollar(10) , five.times(2));
+        assertEquals(Money.dollar(15) , five.times(3));
 
         Money ten = Money.franc(10);
         assertEquals(Money.franc(20) , ten.times(2));
@@ -70,7 +71,7 @@ public class MoneyTest {
     /////// 하위 클래스 제거를 위한 통화개념 추가
     @Test
     void test_currency(){
-        assertEquals("USD" , Money.dollor(1).getCurrency());
+        assertEquals("USD" , Money.dollar(1).getCurrency());
         assertEquals("CHF" , Money.franc(1).getCurrency());
     }
 
@@ -83,21 +84,28 @@ public class MoneyTest {
 //        assertNotEquals(new Dollar(6) , dollar);
         // dollar faranc 합치기
 
-        assertEquals(Money.dollor(10) , Money.dollor(10));
-        assertNotEquals(Money.dollor(20) , Money.dollor(10));
+        assertEquals(Money.dollar(10) , Money.dollar(10));
+        assertNotEquals(Money.dollar(20) , Money.dollar(10));
         assertEquals(Money.franc(10) , Money.franc(10));
         assertNotEquals(Money.franc(20) , Money.franc(10));
 
         // 다른 화폐비교 불가
-        assertFalse(Money.franc(10).equals(Money.dollor(10)));
+        assertFalse(Money.franc(10).equals(Money.dollar(10)));
     }
 
 
     @Test// equals
     void test_add(){
-        Money sum = Money.dollor(5).plus(Money.dollor(5));
-        assertEquals(Money.dollor(5) , sum);
+        Money sum = Money.dollar(5).plus(Money.dollar(5));
+        assertEquals(Money.dollar(5) , sum);
     }
-
+    public void testMixedAddition(){
+        Money fiveBucks = Money.dollar(5);
+        Money tenFrancs = Money.franc(10);
+        Bank bank = new Bank();
+        bank.addRate("CHF", "USD", 2);
+        Money result = bank.reduce(fiveBucks.plus(tenFrancs), "USD");
+        assertEquals(Money.dollar(10), result);
+    }
 
 }
