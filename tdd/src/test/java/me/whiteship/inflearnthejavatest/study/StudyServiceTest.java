@@ -34,24 +34,23 @@ import static org.mockito.Mockito.times;
 @ActiveProfiles("test")
 @Testcontainers
 @Slf4j
-@ContextConfiguration(initializers = StudyServiceTest.ContainerPropertyInitializer.class)
+
 class StudyServiceTest {
 
     @Mock MemberService memberService;
 
     @Autowired StudyRepository studyRepository;
 
-    @Value("${container.port}") int port;
-
-    @Container
-    static DockerComposeContainer composeContainer =
-            new DockerComposeContainer(new File("src/test/resources/docker-compose.yml"))
-            .withExposedService("study-db", 5432);
+//    @Value("${container.port}") int port;
+//
+//    @Container
+//    static DockerComposeContainer composeContainer =
+//            new DockerComposeContainer(new File("src/test/resources/docker-compose.yml"))
+//            .withExposedService("study-db", 5432);
 
     @Test
     void createNewStudy() {
         System.out.println("========");
-        System.out.println(port);
 
         // Given
         StudyService studyService = new StudyService(memberService, studyRepository);
@@ -91,13 +90,13 @@ class StudyServiceTest {
         then(memberService).should().notify(study);
     }
 
-    static class ContainerPropertyInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-
-        @Override
-        public void initialize(ConfigurableApplicationContext context) {
-            TestPropertyValues.of("container.port=" + composeContainer.getServicePort("study-db", 5432))
-                    .applyTo(context.getEnvironment());
-        }
-    }
+//    static class ContainerPropertyInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+//
+//        @Override
+//        public void initialize(ConfigurableApplicationContext context) {
+//            TestPropertyValues.of("container.port=" + composeContainer.getServicePort("study-db", 5432))
+//                    .applyTo(context.getEnvironment());
+//        }
+//    }
 
 }

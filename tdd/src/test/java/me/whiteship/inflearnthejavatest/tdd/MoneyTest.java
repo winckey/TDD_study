@@ -3,16 +3,22 @@ package me.whiteship.inflearnthejavatest.tdd;
 
 import me.whiteship.inflearnthejavatest.Money.Bank;
 import me.whiteship.inflearnthejavatest.Money.Money;
+import me.whiteship.inflearnthejavatest.domain.Study;
+import me.whiteship.inflearnthejavatest.study.StudyRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@DataJpaTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)//객체 생성전략 변경 한개ㅂ만 생성하도록!
 public class MoneyTest {
 
 
+    @Autowired
+    private StudyRepository studyRepository;
 
     //1.서로다른 단위의 화폐더하기 환율 적용
     //2.주식수만큼 곱셈
@@ -107,5 +113,11 @@ public class MoneyTest {
         Money result = bank.reduce(fiveBucks.plus(tenFrancs), "USD");
         assertEquals(Money.dollar(10), result);
     }
+    @Test// equals
+    void test_study_repo(){
+        Study study = studyRepository.save( new Study(10, "테스트"));
 
+        assertEquals(study.getName() , "테스트");
+
+    }
 }

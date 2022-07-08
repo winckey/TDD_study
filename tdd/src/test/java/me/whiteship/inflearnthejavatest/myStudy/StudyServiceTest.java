@@ -1,6 +1,7 @@
 package me.whiteship.inflearnthejavatest.myStudy;
 
 
+import lombok.extern.slf4j.Slf4j;
 import me.whiteship.inflearnthejavatest.domain.Member;
 import me.whiteship.inflearnthejavatest.domain.Study;
 
@@ -12,6 +13,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 
 import java.util.Optional;
@@ -21,14 +27,18 @@ import static org.mockito.BDDMockito.*;
 
 
 
-
+@SpringBootTest
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
+@Testcontainers
+@Slf4j
 class StudyServiceTest {
 
 
     @Mock//구현체가 없음에도 2번방법
     MemberService memberService;// extendtion필수
-    @Mock StudyRepository studyRepository;
+    @Autowired
+    StudyRepository studyRepository;
 
 
 

@@ -3,9 +3,11 @@ package me.whiteship.inflearnthejavatest.study;
 import me.whiteship.inflearnthejavatest.domain.Member;
 import me.whiteship.inflearnthejavatest.domain.Study;
 import me.whiteship.inflearnthejavatest.member.MemberService;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class StudyService {
 
     private final MemberService memberService;

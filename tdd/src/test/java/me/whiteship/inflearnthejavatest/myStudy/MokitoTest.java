@@ -4,6 +4,8 @@ package me.whiteship.inflearnthejavatest.myStudy;
 import me.whiteship.inflearnthejavatest.domain.Study;
 import me.whiteship.inflearnthejavatest.domain.StudyStatus;
 import me.whiteship.inflearnthejavatest.member.MemberService;
+import me.whiteship.inflearnthejavatest.study.StudyRepository;
+import me.whiteship.inflearnthejavatest.study.StudyService;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import static org.junit.jupiter.api.Assertions.*;

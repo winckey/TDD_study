@@ -2,6 +2,7 @@ package me.whiteship.inflearnthejavatest.myStudy;
 
 
 
+import me.whiteship.inflearnthejavatest.domain.Study;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
