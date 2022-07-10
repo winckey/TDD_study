@@ -18,6 +18,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -32,21 +33,31 @@ import static org.mockito.Mockito.times;
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
-@Testcontainers
+//@Testcontainers
 @Slf4j
-
 class StudyServiceTest {
 
-    @Mock MemberService memberService;
+    @Mock
+    MemberService memberService;
 
-    @Autowired StudyRepository studyRepository;
+    @Autowired
+    StudyRepository studyRepository;
 
-//    @Value("${container.port}") int port;
+    //    @Value("${container.port}") int port;
 //
 //    @Container
 //    static DockerComposeContainer composeContainer =
 //            new DockerComposeContainer(new File("src/test/resources/docker-compose.yml"))
 //            .withExposedService("study-db", 5432);
+//    @Container
+//    static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer();
+//
+//    @BeforeAll
+//    static void beforeAll(){
+//      System.out.println(  postgreSQLContainer.getJdbcUrl() );
+//    }
+
+
 
     @Test
     void createNewStudy() {
