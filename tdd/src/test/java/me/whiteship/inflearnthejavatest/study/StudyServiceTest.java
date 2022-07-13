@@ -10,14 +10,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.util.TestPropertyValues;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
+
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.testcontainers.containers.DockerComposeContainer;
+
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -33,7 +30,7 @@ import static org.mockito.Mockito.times;
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
-//@Testcontainers
+@Testcontainers
 @Slf4j
 class StudyServiceTest {
 
@@ -43,20 +40,9 @@ class StudyServiceTest {
     @Autowired
     StudyRepository studyRepository;
 
-    //    @Value("${container.port}") int port;
-//
-//    @Container
-//    static DockerComposeContainer composeContainer =
-//            new DockerComposeContainer(new File("src/test/resources/docker-compose.yml"))
-//            .withExposedService("study-db", 5432);
-//    @Container
-//    static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer();
-//
-//    @BeforeAll
-//    static void beforeAll(){
-//      System.out.println(  postgreSQLContainer.getJdbcUrl() );
-//    }
-
+    @Container
+    static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer()
+            .withDatabaseName("studytest");
 
 
     @Test
@@ -101,13 +87,6 @@ class StudyServiceTest {
         then(memberService).should().notify(study);
     }
 
-//    static class ContainerPropertyInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-//
-//        @Override
-//        public void initialize(ConfigurableApplicationContext context) {
-//            TestPropertyValues.of("container.port=" + composeContainer.getServicePort("study-db", 5432))
-//                    .applyTo(context.getEnvironment());
-//        }
-//    }
+
 
 }
